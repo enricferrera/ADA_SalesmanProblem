@@ -322,7 +322,7 @@ public:
 	bool m_JaHePassat = false;
 	//Atributs Backtracking
 	bool m_visita = false;
-	bool m_visitaNoPassat;
+	int m_startsTram = -1;
 	std::vector<bool> esPartDeTram;
 	//std::stack<CVertex> pilaRecorregut;
 
