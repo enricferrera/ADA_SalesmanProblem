@@ -319,9 +319,10 @@ public:
 	// Marcar
 	bool m_Marca;
 	// TrobaCami
-	bool m_JaHePassat;
+	bool m_JaHePassat = false;
 	//Atributs Backtracking
 	bool m_visita = false;
+	bool m_visitaNoPassat;
 	std::vector<bool> esPartDeTram;
 	//std::stack<CVertex> pilaRecorregut;
 

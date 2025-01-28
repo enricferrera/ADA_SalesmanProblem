@@ -14,7 +14,7 @@
 // ==============================================================================
 
 
-CTrack CamiMesCurt(NULL);
+static CTrack CamiMesCurt(NULL);
 static double LongitudCamiMesCurt;
 
 // TrobaCami1 ===================================================================
@@ -83,7 +83,7 @@ CTrack TrobaCami1(CGraph& g)
 // ==============================================================================
 
 static CVertex* pDesti;
-CTrack CamiActual(NULL);
+static CTrack CamiActual(NULL);
 static double LongitudCamiActual;
 
 // TrobaCami2 ===================================================================
