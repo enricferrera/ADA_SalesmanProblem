@@ -2,6 +2,7 @@
 #include "Graph.h"
 #include <set>
 #include <stack>
+#include <list>
 
 CTrack CamiMesCurt(NULL);
 double LongitudCamiMesCurt;
