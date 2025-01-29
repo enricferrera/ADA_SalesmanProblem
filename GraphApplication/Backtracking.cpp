@@ -51,12 +51,11 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 	// PAS ENDAVANT - PAS ENDARRERE
 	if (LongitudCamiActual < LongitudCamiMesCurt) {
 		// Si no hem passat en general i es visita, cambiem de tram i marquem que aquest node comença aquest tram
-		if (tram == -1)
-			tram == 0
 		if (pActual->m_visita && pActual->m_JaHePassat == false) {
 			tram++;
 			pActual->m_startsTram = tram;
 		}
+		//else if
 		// Marquem aquest vertex com a utilizat en aquest tram
 		pActual->esPartDeTram[tram] = true;
 		pActual->m_JaHePassat = true;
@@ -149,19 +148,96 @@ CTrack SalesmanTrackBacktracking(CGraph &graph, CVisits &visits)
 // SalesmanTrackBacktrackingGreedy =============================================
 // =============================================================================
 
+struct infoCami{
+	CTrack cami;
+	double longitud;
+
+	// Constructor per defecte (per a inicialitzar l'estructura buida)
+	infoCami(CGraph* graph = nullptr) : cami(graph), longitud(0.0) {}
+};
+
+void generarTaula(CGraph& graph, CVisits& visits, std::vector<std::vector<infoCami>>& matriuCamins)
+{
+	// Para cada visita, mira el camino más corto de todas las visitas a la actual
+	size_t i = 0;
+	for (auto visit : visits.m_Vertices) {
+		DijkstraQueue(graph, visit);
+
+		size_t j = 0;
+		for (auto visitDijkstra : visits.m_Vertices) {
+			CVertex* vertexActual = visitDijkstra;
+			while (vertexActual != visit && vertexActual->m_pDijkstraPrevious != nullptr) {
+				matriuCamins[i][j].cami.AddFirst(vertexActual->m_pDijkstraPrevious);
+				matriuCamins[i][j].longitud += vertexActual->m_pDijkstraPrevious->m_Length;
+				vertexActual = vertexActual->m_pDijkstraPrevious->m_pOrigin; // Es origin->recorre al revés
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+vector<int> millorCami;
+
+void SalesmanTrackBacktrackingGreedyRecursiu(CGraph& graph, CVisits& visits, std::vector<std::vector<infoCami>>& matriuCamins, std::vector<int>& camiActual, std::vector<bool>& visitat, double LongitudCamiActual)
+{
+	if (camiActual.size() == visits.m_Vertices.size() - 1) {
+		int lastVisit = visits.m_Vertices.size() - 1;
+		double finalLongitud = LongitudCamiActual + matriuCamins[camiActual.back()][lastVisit].longitud;
+		if (finalLongitud < LongitudCamiMesCurt) {
+			LongitudCamiMesCurt = finalLongitud;
+			millorCami = camiActual;
+			millorCami.push_back(lastVisit);
+		}
+		return;
+	}
+
+	for (size_t i = 0; i < visits.m_Vertices.size() - 1; i++) {
+		if (!visitat[i]) {
+			int prev = camiActual.empty() ? 0 : camiActual.back();
+			double novaLongitud = LongitudCamiActual + matriuCamins[prev][i].longitud;
+
+			// Poda
+			if (novaLongitud >= LongitudCamiMesCurt) continue;
+
+			// Marcar visitat i recursió
+			visitat[i] = true;
+			camiActual.push_back(i);
+
+			SalesmanTrackBacktrackingGreedyRecursiu(graph, visits, matriuCamins, camiActual, visitat, novaLongitud);
+
+			// Backtrack
+			visitat[i] = false;
+			camiActual.pop_back();
+		}
+	}
+}
+
 
 CTrack SalesmanTrackBacktrackingGreedy(CGraph& graph, CVisits& visits)
 {
-	/*
-	CVertex* pInici = graph.GetVertex("INICI");
-	CVertex* pDesti = graph.GetVertex("DESTI");
+	size_t nVisites = visits.m_Vertices.size();
+	std::vector<std::vector<infoCami>> matriuCamins(nVisites, std::vector<infoCami>(nVisites));
 
-	for (CVertex* visita : visits.m_Vertices)
-	{
-		DijkstraQueue(graph, visita);
+	generarTaula(graph, visits, matriuCamins);
+
+	std::vector<int> camiActual = {0};
+	std::vector<bool> visitat(nVisites, false);
+	visitat[0] = true;
+	LongitudCamiMesCurt = numeric_limits<double>::max();
+
+	SalesmanTrackBacktrackingGreedyRecursiu(graph, visits, matriuCamins, camiActual, visitat, 0.0);
+
+
+	CTrack millorCamiTrack(&graph);
+	for (int i = 0; i < millorCami.size() - 1; i++) {
+		millorCamiTrack.Append(matriuCamins[millorCami[i]][millorCami[i+1]].cami);
 	}
-	*/
-	return CTrack(&graph);
+
+	return millorCamiTrack;
 }
+
+// 
+
 
 

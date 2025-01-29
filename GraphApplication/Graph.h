@@ -311,7 +311,7 @@ public:
 	// Atributos de Dijkstra
 	double m_DijkstraDistance;
 	bool m_DijkstraVisit;
-	CEdge* m_pDijkstraPrevious;
+	CEdge* m_pDijkstraPrevious = nullptr;
 	// Atributs per Kruskal
 	int m_KruskalLabel;
 	CVertex* m_pKruskalFather;
@@ -487,7 +487,8 @@ class CTrack {
 public:
 	list<CEdge*> m_Edges;
 	CGraph* m_pGraph;
-	//CTrack() { m_pGraph = NULL; }
+
+	CTrack() { m_pGraph = NULL; }
 	CTrack(CGraph* pGraph) {
 		m_pGraph = pGraph;
 	}

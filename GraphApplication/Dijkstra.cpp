@@ -12,6 +12,7 @@ void Dijkstra(CGraph& graph, CVertex* pStart)
 	for (CVertex &v : graph.m_Vertices) {
 			v.m_DijkstraDistance = DBL_MAX;
 			v.m_DijkstraVisit = false;
+			v.m_pDijkstraPrevious = nullptr;
 	}
 
 	pStart->m_DijkstraDistance = 0;
@@ -23,8 +24,10 @@ void Dijkstra(CGraph& graph, CVertex* pStart)
 		for (CEdge* e : pActual->m_Edges) {
 			double distanciaActual = pActual->m_DijkstraDistance + e->m_Length;
 
-			if (e->m_pDestination->m_DijkstraDistance > distanciaActual)
+			if (e->m_pDestination->m_DijkstraDistance > distanciaActual) {
 				e->m_pDestination->m_DijkstraDistance = distanciaActual;
+				e->m_pDestination->m_pDijkstraPrevious = e;
+			}
 		}
 
 		double distanciaMinima = DBL_MAX;
@@ -50,7 +53,7 @@ void DijkstraQueue(CGraph& graph, CVertex *pStart)
 	//Comparador per al minheap
 	struct comparator {
 		bool operator()(CVertex* v1, CVertex* v2) {
-			return v1->m_DijkstraDistance >= v2->m_DijkstraDistance;
+			return v1->m_DijkstraDistance > v2->m_DijkstraDistance; // Removed >= assertion problems
 		}
 	};
 
@@ -60,6 +63,7 @@ void DijkstraQueue(CGraph& graph, CVertex *pStart)
 	for (CVertex& v : graph.m_Vertices) {
 		v.m_DijkstraDistance = DBL_MAX;
 		v.m_DijkstraVisit = false;
+		v.m_pDijkstraPrevious = nullptr;
 	}
 
 	pStart->m_DijkstraDistance = 0;
