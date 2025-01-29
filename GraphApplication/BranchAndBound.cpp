@@ -50,7 +50,7 @@ public:
 public:
 	CBBNode(int index, CVertex* pDestination, CVisits& visits)
 		: m_index(index)
-		, m_nVisitesVisitades(0)
+		, m_nVisitesVisitades(1)
 		, m_pFather(NULL)
 		, m_Length(0.0)
 		, m_CntRef(1)
@@ -89,55 +89,77 @@ struct comparatorCBBNode {
 
 CTrack SalesmanTrackBranchAndBound1(CGraph& graph, CVisits& visits)
 {
-	size_t nVisites = visits.m_Vertices.size();
+	int nVisites = visits.m_Vertices.size();
+	int lastIndex = nVisites - 1;
+
 	std::vector<std::vector<infoCami>> matriuCamins(nVisites, std::vector<infoCami>(nVisites));
 	generarTaula(graph, visits, matriuCamins);
 
 	priority_queue<CBBNode*, std::vector<CBBNode*>, comparatorCBBNode> queue;
 	queue.push(new CBBNode(0, visits.m_Vertices.back(), visits));
 
-	static double LongitudCamiMesCurt = std::numeric_limits<double>::infinity();
+	double millorLongitud= std::numeric_limits<double>::infinity();
 	CTrack millorCami(&graph);
 
-
+	// Aproach doesn't make sense, hay que añadir todos los nodos incluso los del final
 	while (!queue.empty())
 	{
 		CBBNode* nodeActual = queue.top();
 		queue.pop();
 
-		// Si el node actual supera la millor solucio, el saltem
-		if (nodeActual->m_Length >= LongitudCamiMesCurt)
-		{
-			nodeActual->Unlink();
-			continue;
+		// Si el último nodo no es el final, aún no hem completat el camí valid
+		if (nodeActual->m_nVisitesVisitades != nVisites && nodeActual->m_index != lastIndex) {
+			// Ramifiquem
+			for (size_t i = 0; i < nVisites; i++)
+			{
+				double longitudCami = matriuCamins[nodeActual->m_index][i].longitud;
+				double longitudTotal = nodeActual->m_Length + longitudCami;
+
+				if (!nodeActual->m_visitesVisitades[i]) {
+					if (i == lastIndex) {
+						bool totsAltresVisitats = true;
+						// Resto visitas nodo visitado?
+						for (size_t j = 0; j < nVisites; j++)
+							if (j != lastIndex && !nodeActual->m_visitesVisitades[j]) {
+								totsAltresVisitats = false;
+								break;
+							}
+						if (totsAltresVisitats) {
+							CBBNode* nouNode = new CBBNode(static_cast<int>(i), nodeActual, longitudCami);
+							queue.push(nouNode);
+						}
+					}
+					else {
+							CBBNode* nouNode = new CBBNode(static_cast<int>(i), nodeActual, longitudCami);
+							queue.push(nouNode);
+					}
+				}
+			}
 		}
 
 		// Compruebas si el nodo es solución
-		if (nodeActual->m_nVisitesVisitades == nodeActual->m_visitesVisitades.size())
-		{
+		if (nodeActual->m_nVisitesVisitades == nVisites	&& nodeActual->m_index == lastIndex) {
+			if (nodeActual->m_Length < millorLongitud) {
+				millorLongitud = nodeActual->m_Length;
+				millorCami.Clear();
 
+				//Reconstrucció camí
+				std::vector<int> indexsCami;
+				CBBNode* aux = nodeActual;
+				while (aux != nullptr) {
+					indexsCami.push_back(aux->m_index);
+					aux = aux->m_pFather;
+				}
+				std::reverse(indexsCami.begin(), indexsCami.end());
+
+				for (size_t i = 0; i < indexsCami.size() - 1; ++i) {
+					millorCami.Append(matriuCamins[indexsCami[i]][indexsCami[i + 1]].cami);
+				}
+			}
+			//continue;
 		}
-		
-		bool esSolucion = true;
-		for (size_t i = 0; nodeActual->m_visitesVisitades.size(); i++) {
-
-		}
-
-		// Añades todos los nodos que no hayas visitado
-		for (size_t i = 0; i < nodeActual->m_visitesVisitades.size(); i++)
-		{
-			if (nodeActual->m_visitesVisitades[i] == false)
-				queue.push(new CBBNode(i, nodeActual, matriuCamins[nodeActual->m_index][i].longitud));
-		}
-		
-
 	}
-
-
-
-
-
-	return CTrack(&graph);
+	return millorCami;
 }
 
 // SalesmanTrackBranchAndBound2 ===================================================
