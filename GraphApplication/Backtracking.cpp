@@ -148,7 +148,7 @@ CTrack SalesmanTrackBacktracking(CGraph &graph, CVisits &visits)
 // SalesmanTrackBacktrackingGreedy =============================================
 // =============================================================================
 
-struct infoCami{
+static struct infoCami{
 	CTrack cami;
 	double longitud;
 
@@ -156,7 +156,7 @@ struct infoCami{
 	infoCami(CGraph* graph = nullptr) : cami(graph), longitud(0.0) {}
 };
 
-void generarTaula(CGraph& graph, CVisits& visits, std::vector<std::vector<infoCami>>& matriuCamins)
+static void generarTaula(CGraph& graph, CVisits& visits, std::vector<std::vector<infoCami>>& matriuCamins)
 {
 	// Para cada visita, mira el camino más corto de todas las visitas a la actual
 	size_t i = 0;
@@ -236,8 +236,3 @@ CTrack SalesmanTrackBacktrackingGreedy(CGraph& graph, CVisits& visits)
 
 	return millorCamiTrack;
 }
-
-// 
-
-
-
