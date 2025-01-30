@@ -323,7 +323,9 @@ public:
 	//Atributs Backtracking
 	bool m_visita = false;
 	int m_startsTram = -1;
-	std::vector<bool> esPartDeTram;
+	std::vector<bool> m_esPartDeTram;
+	std::vector<bool> m_visitesVisitades;
+	int copsHePassat = 0;
 	//std::stack<CVertex> pilaRecorregut;
 
 	// Métodes

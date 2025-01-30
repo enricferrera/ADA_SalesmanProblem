@@ -30,9 +30,9 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 	if (pActual == pDesti) {
 		// ¿Hem passat per totes les visites?
 		bool visitesCompletades = true;
-		pActual->m_JaHePassat = true; // Posem destí com visitat
-		for (CVertex* v : visits.m_Vertices)
-			if (v->m_startsTram == NO_PERTANY) {
+		pActual->m_visitesVisitades.back() = true; // Posem destí com visitat
+		for (bool visita : pActual->m_visitesVisitades)
+			if (visita == false) {
 				visitesCompletades = false;
 				break;
 			}
@@ -51,14 +51,15 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 	// PAS ENDAVANT - PAS ENDARRERE
 	if (LongitudCamiActual < LongitudCamiMesCurt) {
 		// Si no hem passat en general i es visita, cambiem de tram i marquem que aquest node comença aquest tram
-		if (pActual->m_visita && pActual->m_JaHePassat == false) {
+		if (pActual->m_visita && pActual->m_esPartDeTram[tram] == false) {
 			tram++;
 			pActual->m_startsTram = tram;
 		}
-		//else if
+		else if (pActual->m_visita && pActual->m_esPartDeTram[tram] == true) {
+			goto ciclo;
+		}
 		// Marquem aquest vertex com a utilizat en aquest tram
-		pActual->esPartDeTram[tram] = true;
-		pActual->m_JaHePassat = true;
+		pActual->m_esPartDeTram[tram] = true;
 
 		NodeCami node; node.m_pAnterior = pAnterior;
 
@@ -73,7 +74,7 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 			//while (it != recorrido.rend() && (*it)->m_startsTram == tram)
 			//{
 				// Comprobamos que no sea parte del tramo
-				if (!pE->m_pDestination->esPartDeTram[tram]) {
+				if (!pE->m_pDestination->m_esPartDeTram[tram]) {
 					node.m_pEdge = pE;
 					LongitudCamiActual += pE->m_Length;
 					SalesmanTrackBacktrackingRecursiu(&node, pE->m_pDestination, visits);
@@ -84,16 +85,16 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 		// Si hechamos para atras hemos de quitar el nodo de ese tramo y si es uno de los que inicia lo ponemos a -1; Si estas en el tramo 1 y has iniciado el tramo 1, lo quitas del tramo 1, quitas que ha iniciado el tramo 1 y reduces el tramo --> Esto es para las visitas
 		// Sinó es una visita, lo quitas del tramo y ya
 		// En general has de quitar que pertenece al tramo y que has pasado por el
+		ciclo:
 		if (pActual->m_visita && tram == pActual->m_startsTram)
 		{
-			pActual->esPartDeTram[tram] = false;
+			pActual->m_esPartDeTram[tram] = false;
 			pActual->m_startsTram = -1;
 			tram -= 1;
 		}
 		// Si es vertex normal/visita, lo quitas de ese tramo y ya
 		else
-			pActual->esPartDeTram[tram] = false;
-		pActual->m_JaHePassat = false;
+			pActual->m_esPartDeTram[tram] = false;
 	}
 
 	// Comprobar destino y todas las visitas recorridas
@@ -126,16 +127,25 @@ CTrack SalesmanTrackBacktracking(CGraph &graph, CVisits &visits)
 	pDesti = visits.m_Vertices.back();
 
 	CamiActual.SetGraph(&graph);
+	CamiActual.Clear();
 	CamiMesCurt.SetGraph(&graph);
+	CamiMesCurt.Clear();
 
 	LongitudCamiMesCurt = numeric_limits<double>::max();
 	LongitudCamiActual = 0.0;
 
- 	for (CVertex* v : visits.m_Vertices) v->m_visita = true;
-	for (CVertex& v : graph.m_Vertices) v.esPartDeTram.resize(visits.GetNVertices()-1, false);
+	tram = -1;
+
+	for (CVertex* v : visits.m_Vertices) {
+		v->m_visita = true;
+		v->m_visitesVisitades.resize(visits.GetNVertices(), false);
+	}
+	for (CVertex& v : graph.m_Vertices) v.m_esPartDeTram.resize(visits.GetNVertices()-1, false);
 
 	pDesti->m_startsTram = -2;
 
+	pInici->m_esPartDeTram[0] = true;
+	pInici->m_visitesVisitades[0] = true;
 	SalesmanTrackBacktrackingRecursiu(NULL, pInici, visits);
 	
 	return CamiMesCurt;

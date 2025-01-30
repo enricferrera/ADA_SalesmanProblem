@@ -313,11 +313,11 @@ double CalculaCotaInferiorBB3(const CBBNode2* node, const std::vector<std::vecto
 	std::vector<double> distanciesMinimes(matriuCamins.size(), std::numeric_limits<double>::max());
 
 	for (size_t i = 0; i < node->m_visitesVisitades.size() - 1; i++) {
-		if (node->m_visitesVisitades[i] == false) {
+		if (node->m_visitesVisitades[i] == false && i != node->m_index) {
 			for (size_t j = 0; j < node->m_visitesVisitades.size(); j++) {
 				if (i != j 
-					&& node->m_visitesVisitades[i] == false 
-					&& !(node->m_index == i && node->m_visitesVisitades.size() - 1)) {
+					&& node->m_visitesVisitades[j] == false 
+					&& i != node->m_index ) {
 					distanciesMinimes[j] = std::min(distanciesMinimes[j], matriuCamins[i][j].longitud);
 				}
 			}
@@ -326,9 +326,9 @@ double CalculaCotaInferiorBB3(const CBBNode2* node, const std::vector<std::vecto
 
 	double cotaInferior = 0.0;
 	// Busquem el camí minim a tots els nodes no visitats
-	for (size_t i = 0; i < node->m_visitesVisitades.size(); i++) {
-		if (!node->m_visitesVisitades[i])
-			cotaInferior += distanciesMinimes[i];
+	for (auto distancia : distanciesMinimes) {
+		if (distancia != std::numeric_limits<double>::max())
+			cotaInferior += distancia;
 	}
 
 	return node->m_Length - cotaInferior;
