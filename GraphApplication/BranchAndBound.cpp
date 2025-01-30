@@ -48,7 +48,7 @@ public:
 	double m_Length;
 	unsigned m_CntRef;
 public:
-	CBBNode(int index, CVertex* pDestination, CVisits& visits)
+	CBBNode(int index, CVisits& visits)
 		: m_index(index)
 		, m_nVisitesVisitades(1)
 		, m_pFather(NULL)
@@ -85,81 +85,82 @@ struct comparatorCBBNode {
 	}
 };
 
+void ExpandLength(CBBNode* actual, int nVisites, std::vector<std::vector<infoCami>>& matriuCamins, std::priority_queue<CBBNode*, std::vector<CBBNode*>, comparatorCBBNode>& cuaPrioritat)
+{
+	// Si es nodo final no lo expandimos, no tiene sentido
+	if (actual->m_index == nVisites - 1) {
+		return;
+	}
 
+	// Expandimos nodos no visitados
+	for (int i = 0; i < nVisites; i++)
+	{
+		if (!actual->m_visitesVisitades[i])
+		{
+			cuaPrioritat.push(new CBBNode(i, actual, matriuCamins[actual->m_index][i].longitud));
+		}
+	}
+}
 
 CTrack SalesmanTrackBranchAndBound1(CGraph& graph, CVisits& visits)
 {
-	int nVisites = visits.m_Vertices.size();
-	int lastIndex = nVisites - 1;
+
+	const size_t nVisites = visits.GetNVertices();
+	if (nVisites < 2) return CTrack(&graph);
 
 	std::vector<std::vector<infoCami>> matriuCamins(nVisites, std::vector<infoCami>(nVisites));
 	generarTaula(graph, visits, matriuCamins);
 
-	priority_queue<CBBNode*, std::vector<CBBNode*>, comparatorCBBNode> queue;
-	queue.push(new CBBNode(0, visits.m_Vertices.back(), visits));
+	std::priority_queue<CBBNode*, std::vector<CBBNode*>, comparatorCBBNode> cuaPrioritat;
+	cuaPrioritat.push(new CBBNode(0, visits));
 
-	double millorLongitud= std::numeric_limits<double>::infinity();
+	double millorLongitud = std::numeric_limits<double>::infinity();
 	CTrack millorCami(&graph);
 
-	// Aproach doesn't make sense, hay que añadir todos los nodos incluso los del final
-	while (!queue.empty())
-	{
-		CBBNode* nodeActual = queue.top();
-		queue.pop();
+	while (!cuaPrioritat.empty()) {
+		CBBNode* actual = cuaPrioritat.top();
+		cuaPrioritat.pop();
 
-		// Si el último nodo no es el final, aún no hem completat el camí valid
-		if (nodeActual->m_nVisitesVisitades != nVisites && nodeActual->m_index != lastIndex) {
-			// Ramifiquem
+		// Si index es el nodo final, compruebas si se han hecho todas las visitas para ver si es solucion
+		if (actual->m_index == nVisites - 1)
+		{
+			bool totsVisitats = true;
 			for (size_t i = 0; i < nVisites; i++)
 			{
-				double longitudCami = matriuCamins[nodeActual->m_index][i].longitud;
-				double longitudTotal = nodeActual->m_Length + longitudCami;
-
-				if (!nodeActual->m_visitesVisitades[i]) {
-					if (i == lastIndex) {
-						bool totsAltresVisitats = true;
-						// Resto visitas nodo visitado?
-						for (size_t j = 0; j < nVisites; j++)
-							if (j != lastIndex && !nodeActual->m_visitesVisitades[j]) {
-								totsAltresVisitats = false;
-								break;
-							}
-						if (totsAltresVisitats) {
-							CBBNode* nouNode = new CBBNode(static_cast<int>(i), nodeActual, longitudCami);
-							queue.push(nouNode);
-						}
-					}
-					else {
-							CBBNode* nouNode = new CBBNode(static_cast<int>(i), nodeActual, longitudCami);
-							queue.push(nouNode);
-					}
+				if (!actual->m_visitesVisitades[i]) // No visitat
+				{
+					totsVisitats = false;
+					break;
 				}
 			}
+			if (totsVisitats)
+				goto reconstruccioCami;
 		}
 
-		// Compruebas si el nodo es solución
-		if (nodeActual->m_nVisitesVisitades == nVisites	&& nodeActual->m_index == lastIndex) {
-			if (nodeActual->m_Length < millorLongitud) {
-				millorLongitud = nodeActual->m_Length;
-				millorCami.Clear();
+		// Expandim i pasem al seguent node
+		ExpandLength(actual, nVisites, matriuCamins, cuaPrioritat);
+		continue;
 
-				//Reconstrucció camí
-				std::vector<int> indexsCami;
-				CBBNode* aux = nodeActual;
-				while (aux != nullptr) {
-					indexsCami.push_back(aux->m_index);
-					aux = aux->m_pFather;
-				}
-				std::reverse(indexsCami.begin(), indexsCami.end());
-
-				for (size_t i = 0; i < indexsCami.size() - 1; ++i) {
-					millorCami.Append(matriuCamins[indexsCami[i]][indexsCami[i + 1]].cami);
-				}
-			}
-			//continue;
+		// Reconstrucció camí
+		reconstruccioCami:
+		std::vector<int> indexsCami;
+		CBBNode* aux = actual;
+		while (aux != nullptr) {
+			indexsCami.push_back(aux->m_index);
+			aux = aux->m_pFather;
 		}
+		std::reverse(indexsCami.begin(), indexsCami.end());
+
+		for (size_t i = 0; i < indexsCami.size() - 1; ++i) {
+			millorCami.Append(matriuCamins[indexsCami[i]][indexsCami[i + 1]].cami);
+		}
+
+		delete actual;
+		return millorCami;
 	}
-	return millorCami;
+	
+	// Si no trobem cap, retornem ruta buida
+	return CTrack(&graph);
 }
 
 // SalesmanTrackBranchAndBound2 ===================================================
