@@ -275,7 +275,7 @@ CTrack SalesmanTrackBranchAndBound2(CGraph& graph, CVisits &visits)
 				}
 			}
 			if (totsVisitats)
-				millorCota = actual->m_cotaInferior;
+				millorCota = actual->m_Length;
 				goto reconstruccioCami;
 		}
 
@@ -303,17 +303,126 @@ CTrack SalesmanTrackBranchAndBound2(CGraph& graph, CVisits &visits)
 	return millorCami;
 }
 
-// SalesmanTrackBranchAndBound3 ===================================================
+// =============================================================================
+// SalesmanTrackBranchAndBound3 ================================================
+// =============================================================================
 
+// cota inferior ===============================================================
+double CalculaCotaInferiorBB3(const CBBNode2* node, const std::vector<std::vector<infoCami>>& matriuCamins)
+{
+	std::vector<double> distanciesMinimes(matriuCamins.size(), std::numeric_limits<double>::max());
+
+	for (size_t i = 0; i < node->m_visitesVisitades.size() - 1; i++) {
+		if (node->m_visitesVisitades[i] == false) {
+			for (size_t j = 0; j < node->m_visitesVisitades.size(); j++) {
+				if (i != j 
+					&& node->m_visitesVisitades[i] == false 
+					&& !(node->m_index == i && node->m_visitesVisitades.size() - 1)) {
+					distanciesMinimes[j] = std::min(distanciesMinimes[j], matriuCamins[i][j].longitud);
+				}
+			}
+		}
+	}
+
+	double cotaInferior = 0.0;
+	// Busquem el camí minim a tots els nodes no visitats
+	for (size_t i = 0; i < node->m_visitesVisitades.size(); i++) {
+		if (!node->m_visitesVisitades[i])
+			cotaInferior += distanciesMinimes[i];
+	}
+
+	return node->m_Length - cotaInferior;
+}
+
+// expand ==================================================================
+void ExpandBB3(CBBNode2* actual, int nVisites
+	, std::vector<std::vector<infoCami>>& matriuCamins
+	, std::vector<double>& distanciesMinimes
+	, std::priority_queue<CBBNode2*, std::vector<CBBNode2*>, comparatorCBBNode2>& cuaPrioritat)
+{
+	// Si es nodo final no lo expandimos, no tiene sentido
+	if (actual->m_index == nVisites - 1) {
+		return;
+	}
+
+	// Expandimos nodos no visitados
+	for (int i = 0; i < nVisites; i++)
+	{
+		if (!actual->m_visitesVisitades[i])
+		{
+			CBBNode2* nouNode = new CBBNode2(i, actual, matriuCamins[actual->m_index][i].longitud);
+			nouNode->m_cotaInferior = CalculaCotaInferiorBB3(nouNode, matriuCamins);
+			cuaPrioritat.push(nouNode);
+		}
+	}
+}
 
 CTrack SalesmanTrackBranchAndBound3(CGraph& graph, CVisits &visits)
 {
-	size_t nVisites = visits.m_Vertices.size();
-	std::vector<std::vector<infoCami>> matriuCamins(nVisites, std::vector<infoCami>(nVisites));
+	const size_t nVisites = visits.GetNVertices();
+	if (nVisites < 2) return CTrack(&graph);
 
+	std::vector<std::vector<infoCami>> matriuCamins(nVisites, std::vector<infoCami>(nVisites));
 	generarTaula(graph, visits, matriuCamins);
 
-	return CTrack(&graph);
+	// Distancies mínimes per al càlcul de la cota inferior
+	std::vector<double> distanciesMinimes(nVisites, std::numeric_limits<double>::max());
+	PreCalcularMinims(matriuCamins, distanciesMinimes);
+
+	std::priority_queue<CBBNode2*, std::vector<CBBNode2*>, comparatorCBBNode2> cuaPrioritat;
+	cuaPrioritat.push(new CBBNode2(0, visits));
+
+	CTrack millorCami(&graph);
+	double millorCota = std::numeric_limits<double>::max();
+
+	while (!cuaPrioritat.empty()) {
+		CBBNode2* actual = cuaPrioritat.top();
+		cuaPrioritat.pop();
+
+		if (actual->m_cotaInferior >= millorCota) {
+			delete actual;
+			continue;
+		}
+
+		// Si index es el nodo final, compruebas si se han hecho todas las visitas para ver si es solucion
+		if (actual->m_index == nVisites - 1)
+		{
+			bool totsVisitats = true;
+			for (size_t i = 0; i < nVisites; i++)
+			{
+				if (!actual->m_visitesVisitades[i]) // No visitat
+				{
+					totsVisitats = false;
+					break;
+				}
+			}
+			if (totsVisitats)
+				millorCota = actual->m_Length;
+			goto reconstruccioCami;
+		}
+
+		// Expandim i pasem al seguent node
+		ExpandBB3(actual, nVisites, matriuCamins, distanciesMinimes, cuaPrioritat);
+		continue;
+
+		// Reconstrucció camí
+	reconstruccioCami:
+		millorCami.Clear();
+		std::vector<int> indexsCami;
+		CBBNode2* aux = actual;
+		while (aux != nullptr) {
+			indexsCami.push_back(aux->m_index);
+			aux = aux->m_pFather;
+		}
+		std::reverse(indexsCami.begin(), indexsCami.end());
+
+		for (size_t i = 0; i < indexsCami.size() - 1; ++i) {
+			millorCami.Append(matriuCamins[indexsCami[i]][indexsCami[i + 1]].cami);
+		}
+	}
+
+	// Si no trobem cap, retornem ruta buida
+	return millorCami;
 }
 
 // SalesmanTrackBranchAndBound4 ===================================================
