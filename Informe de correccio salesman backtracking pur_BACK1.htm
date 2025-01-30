@@ -20,7 +20,6 @@
 <div class="menu">
 <div class="izquierda">
 <h1>Informe de correcció SALESMAN_BACKTRACKING_PUR</h1>
-<p><span>Lliurament:</span>Pràctica Lliurament Recuperació (SALESMAN_RECUPERACIO)</p>
 <p><span>Assignatura:</span>Anàlisis i Diseny d'Algorismes (ADA) </p>
 <h3>Demanat per:</h3>
 <ul>
@@ -28,7 +27,7 @@
 </ul>
 </div>
 <div class="derecha">
-<p style="margin-top: 25px;"><span>Data:</span>Thu Jan 30 07:26:10 2025
+<p style="margin-top: 25px;"><span>Data:</span>Thu Jan 30 12:07:08 2025
 </p>
 <p style="margin-top: 25px;"><span>Corrector:</span>SALESMAN_BACKTRACKING_PUR (SALESMAN_BACKTRACKING_PUR)</p>
 <h3>Autors:</h3>
@@ -38,7 +37,7 @@
 </div>
 </div>
 <div class="resultado">
-<p><span>Backtracking pur </span><span id="nota">0</span></p>
+<p><span>Backtracking pur </span><span id="nota">2.18182</span></p>
 <script>
 const notas = document.querySelectorAll("#nota");
 notas.forEach(nota => {
@@ -94,10 +93,10 @@ elementos[i].hidden = !mostrar;
 <h3>Llista de proves:</h3>
 <ul>
 <li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_1">Prova Salesman Backtracking Simple<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
-<li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_2">Prova Salesman Backtracking GreedyNoOptimo<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
+<li class="elemento" data-propiedades="correcta  "><span class="tituloLista"><a href="#TEST_2">Prova Salesman Backtracking GreedyNoOptimo<span class = "descripcion">:</span></a></span><span class="correcto"> Correcte</span></li>
 <li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_3">Prova Salesman Backtracking RepeatVertex<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
-<li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_4">Prova Salesman Backtracking AfterEnd<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
-<li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_5">Prova Salesman Backtracking Graf10_20_3<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
+<li class="elemento" data-propiedades="correcta  "><span class="tituloLista"><a href="#TEST_4">Prova Salesman Backtracking AfterEnd<span class = "descripcion">:</span></a></span><span class="correcto"> Correcte</span></li>
+<li class="elemento" data-propiedades="correcta  "><span class="tituloLista"><a href="#TEST_5">Prova Salesman Backtracking Graf10_20_3<span class = "descripcion">:</span></a></span><span class="correcto"> Correcte</span></li>
 <li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_6">Prova Salesman Backtracking Graf10_20_5<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
 <li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_7">Prova Salesman Backtracking Graf10_20_6<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
 <li class="elemento" data-propiedades="incorrecta  "><span class="tituloLista"><a href="#TEST_8">Prova Salesman Backtracking Graf10_40_4<span class = "descripcion">:</span></a></span><span class="incorrecto"> Falla amb 1 errors</span></li>
@@ -150,7 +149,7 @@ Temps màxim permes per la ejecució de l'algorisme : 1.6e-05 seg.
 
 </dd>
 </ul><br></div>
-<div class="test elemento" data-propiedades="incorrecta ">
+<div class="test elemento" data-propiedades="correcta ">
 <hr>
 <a name="TEST_2">
 <h3>Prova Salesman Backtracking GreedyNoOptimo</h3>
@@ -160,16 +159,12 @@ Fitxer amb les visites: "TestSalesMan\\GreedyNoOptimo.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\GreedyNoOptimo.TRK"</p>
 <p> Temps de referència: 0.001229seg.<br>
 Temps d'execució máxim: 0.004916seg.<br>
+Temps d'execució de la prova: 0.002484seg.</P>
+<P><b>CAMI OK:</b> [V0001 &mdash;E0017&rarr; V0001 // V0006 &mdash;E0017$Reverse&rarr; V0001 &mdash;E0019&rarr; V0001 // V0002 &mdash;E0021&rarr; V0001 // V0003 &mdash;E0023&rarr; V0001 // V0004 &mdash;E0013&rarr; V0001 // V0009 &mdash;E0015&rarr; V0005]</P>
+<P><b>CAMI PRACTICA:</b> [V0001 &mdash;E0017&rarr; V0001 // V0006 &mdash;E0017$Reverse&rarr; V0001 &mdash;E0019&rarr; V0001 // V0002 &mdash;E0021&rarr; V0001 // V0003 &mdash;E0023&rarr; V0001 // V0004 &mdash;E0013&rarr; V0001 // V0009 &mdash;E0015&rarr; V0005]</P>
 
-<b style="color: red; ">Falla amb 1 errors</b>
-<ul>
-<li>Time out
-<dd>
-<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
- EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\GreedyNoOptimo_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\GreedyNoOptimo.GR TestSalesMan\GreedyNoOptimo.VIS Outputs\GreedyNoOptimo_SalesmanBacktracking.TRK</p>
-
-</dd>
-</ul><br></div>
+ <b>CORRECTE</b>
+</div>
 <div class="test elemento" data-propiedades="incorrecta ">
 <hr>
 <a name="TEST_3">
@@ -180,17 +175,18 @@ Fitxer amb les visites: "TestSalesMan\\RepeatVertex.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\RepeatVertex.TRK"</p>
 <p> Temps de referència: 0.01412seg.<br>
 Temps d'execució máxim: 0.05648seg.<br>
+Temps d'execució de la prova: 0.014884seg.</P>
+<P><b>CAMI OK:</b> [V0001 &mdash;E0001&rarr; V0001 // V0002 &mdash;E0003&rarr; V0001 // V0003 &mdash;E0009&rarr; V0001 // V0011 &mdash;E0013&rarr; V0001 // V0010 &mdash;E0015$Reverse&rarr; V0001 // V0006 &mdash;E0017&rarr; V0001 // V0007 &mdash;E0019&rarr; V0001 // V0008 &mdash;E0021&rarr; V0001 // V0009 &mdash;E0025&rarr; V0001 // V0011 &mdash;E0009$Reverse&rarr; V0001 // V0003 &mdash;E0005&rarr; V0001 // V0004 &mdash;E0007&rarr; V0005]</P>
+<P><b>CAMI PRACTICA:</b> [V0001 &mdash;E0001&rarr; V0001 // V0002 &mdash;E0003&rarr; V0001 // V0003 &mdash;E0009&rarr; V0001 // V0011 &mdash;E0011&rarr; V0001 // V0006 &mdash;E0017&rarr; V0001 // V0007 &mdash;E0019&rarr; V0001 // V0008 &mdash;E0021&rarr; V0001 // V0009 &mdash;E0023&rarr; V0001 // V0010 &mdash;E0013$Reverse&rarr; V0001 // V0011 &mdash;E0009$Reverse&rarr; V0001 // V0003 &mdash;E0005&rarr; V0001 // V0004 &mdash;E0007&rarr; V0005]</P>
 
 <b style="color: red; ">Falla amb 1 errors</b>
 <ul>
-<li>Time out
+<li>Camí massa llarg
 <dd>
-<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
- EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\RepeatVertex_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\RepeatVertex.GR TestSalesMan\RepeatVertex.VIS Outputs\RepeatVertex_SalesmanBacktracking.TRK</p>
-
+Camí masa llarg ( longitud correcte 1853.41, longitud camin pràctica 1952.61)
 </dd>
 </ul><br></div>
-<div class="test elemento" data-propiedades="incorrecta ">
+<div class="test elemento" data-propiedades="correcta ">
 <hr>
 <a name="TEST_4">
 <h3>Prova Salesman Backtracking AfterEnd</h3>
@@ -200,17 +196,13 @@ Fitxer amb les visites: "TestSalesMan\\AfterEnd.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\AfterEnd.TRK"</p>
 <p> Temps de referència: 0.000283seg.<br>
 Temps d'execució máxim: 0.001132seg.<br>
+Temps d'execució de la prova: 0.000771seg.</P>
+<P><b>CAMI OK:</b> [V0001 &mdash;E0003&rarr; V0001 // V0009 &mdash;E0007&rarr; V0001 // V0008 &mdash;E0009&rarr; V0001 // V0003 &mdash;E0011&rarr; V0001 // V0006 &mdash;E0013&rarr; V0001 // V0007 &mdash;E0015&rarr; V0001 // V0004 &mdash;E0017&rarr; V0001 // V0005 &mdash;E0019&rarr; V0001 // V0003 &mdash;E0009$Reverse&rarr; V0008]</P>
+<P><b>CAMI PRACTICA:</b> [V0001 &mdash;E0003&rarr; V0001 // V0009 &mdash;E0007&rarr; V0001 // V0008 &mdash;E0009&rarr; V0001 // V0003 &mdash;E0011&rarr; V0001 // V0006 &mdash;E0021$Reverse&rarr; V0001 // V0004 &mdash;E0015$Reverse&rarr; V0001 // V0007 &mdash;E0013$Reverse&rarr; V0001 // V0006 &mdash;E0011$Reverse&rarr; V0001 // V0003 &mdash;E0009$Reverse&rarr; V0008]</P>
 
-<b style="color: red; ">Falla amb 1 errors</b>
-<ul>
-<li>Time out
-<dd>
-<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
- EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\AfterEnd_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\AfterEnd.GR TestSalesMan\AfterEnd.VIS Outputs\AfterEnd_SalesmanBacktracking.TRK</p>
-
-</dd>
-</ul><br></div>
-<div class="test elemento" data-propiedades="incorrecta ">
+ <b>CORRECTE</b>
+</div>
+<div class="test elemento" data-propiedades="correcta ">
 <hr>
 <a name="TEST_5">
 <h3>Prova Salesman Backtracking Graf10_20_3</h3>
@@ -220,17 +212,12 @@ Fitxer amb les visites: "TestSalesMan\\Graf10_20_3.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\Graf10_20_3.TRK"</p>
 <p> Temps de referència: 0.000162seg.<br>
 Temps d'execució máxim: 0.000648seg.<br>
-Temps d'execució de la prova: 0.000471seg.</P>
+Temps d'execució de la prova: 0.000472seg.</P>
 <P><b>CAMI OK:</b> [V0008 &mdash;E0025$Reverse&rarr; V0008 // V0007 &mdash;E0011$Reverse&rarr; V0008 // V0004 &mdash;E0005$Reverse&rarr; V0008 // V0003 &mdash;E0033&rarr; V0006]</P>
-<P><b>CAMI PRACTICA:</b> [V0008 &mdash;E0025$Reverse&rarr; V0008 // V0007 &mdash;E0011$Reverse&rarr; V0008 // V0004 &mdash;E0011&rarr; V0008 // V0007 &mdash;E0025&rarr; V0008 &mdash;E0013$Reverse&rarr; V0008 // V0005 &mdash;E0027&rarr; V0006]</P>
+<P><b>CAMI PRACTICA:</b> [V0008 &mdash;E0025$Reverse&rarr; V0008 // V0007 &mdash;E0011$Reverse&rarr; V0008 // V0004 &mdash;E0005$Reverse&rarr; V0008 // V0003 &mdash;E0033&rarr; V0006]</P>
 
-<b style="color: red; ">Falla amb 1 errors</b>
-<ul>
-<li>Camí massa llarg
-<dd>
-Camí masa llarg ( longitud correcte 30727.4, longitud camin pràctica 43375.1)
-</dd>
-</ul><br></div>
+ <b>CORRECTE</b>
+</div>
 <div class="test elemento" data-propiedades="incorrecta ">
 <hr>
 <a name="TEST_6">
@@ -241,14 +228,15 @@ Fitxer amb les visites: "TestSalesMan\\Graf10_20_5.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\Graf10_20_5.TRK"</p>
 <p> Temps de referència: 0.035897seg.<br>
 Temps d'execució máxim: 0.143588seg.<br>
+Temps d'execució de la prova: 1.83346seg.</P>
+<P><b>CAMI OK:</b> [V0007 &mdash;E0029$Reverse&rarr; V0007 // V0003 &mdash;E0021$Reverse&rarr; V0007 // V0005 &mdash;E0021&rarr; V0007 // V0003 &mdash;E0031&rarr; V0007 // V0006 &mdash;E0013&rarr; V0007 // V0008 &mdash;E0019&rarr; V0002]</P>
+<P><b>CAMI PRACTICA:</b> [V0007 &mdash;E0037$Reverse&rarr; V0007 // V0008 &mdash;E0013$Reverse&rarr; V0007 // V0006 &mdash;E0013&rarr; V0007 // V0008 &mdash;E0037&rarr; V0007 &mdash;E0029$Reverse&rarr; V0007 // V0003 &mdash;E0021$Reverse&rarr; V0007 // V0005 &mdash;E0007$Reverse&rarr; V0007 // V0001 &mdash;E0001&rarr; V0002]</P>
 
 <b style="color: red; ">Falla amb 1 errors</b>
 <ul>
-<li>Time out
+<li>Camí massa llarg
 <dd>
-<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
- EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\Graf10_20_5_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\Graf10_20_5.GR TestSalesMan\Graf10_20_5.VIS Outputs\Graf10_20_5_SalesmanBacktracking.TRK</p>
-
+Camí masa llarg ( longitud correcte 59549.7, longitud camin pràctica 85390.1)
 </dd>
 </ul><br></div>
 <div class="test elemento" data-propiedades="incorrecta ">
@@ -261,14 +249,15 @@ Fitxer amb les visites: "TestSalesMan\\Graf10_20_6.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\Graf10_20_6.TRK"</p>
 <p> Temps de referència: 0.003264seg.<br>
 Temps d'execució máxim: 0.013056seg.<br>
+Temps d'execució de la prova: 0.123373seg.</P>
+<P><b>CAMI OK:</b> [V0002 &mdash;E0001$Reverse&rarr; V0002 // V0001 &mdash;E0013&rarr; V0002 // V0008 &mdash;E0017&rarr; V0002 // V0010 &mdash;E0035&rarr; V0002 // V0005 &mdash;E0019&rarr; V0002 // V0003 &mdash;E0023$Reverse&rarr; V0002 // V0004 &mdash;E0011&rarr; V0007]</P>
+<P><b>CAMI PRACTICA:</b> [V0002 &mdash;E0029$Reverse&rarr; V0002 // V0006 &mdash;E0009$Reverse&rarr; V0002 // V0004 &mdash;E0033&rarr; V0002 // V0005 &mdash;E0035$Reverse&rarr; V0002 // V0010 &mdash;E0017$Reverse&rarr; V0002 // V0008 &mdash;E0013$Reverse&rarr; V0002 // V0001 &mdash;E0003&rarr; V0002 // V0003 &mdash;E0023$Reverse&rarr; V0002 // V0004 &mdash;E0011&rarr; V0007]</P>
 
 <b style="color: red; ">Falla amb 1 errors</b>
 <ul>
-<li>Time out
+<li>Camí massa llarg
 <dd>
-<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
- EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\Graf10_20_6_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\Graf10_20_6.GR TestSalesMan\Graf10_20_6.VIS Outputs\Graf10_20_6_SalesmanBacktracking.TRK</p>
-
+Camí masa llarg ( longitud correcte 50440.7, longitud camin pràctica 70302.4)
 </dd>
 </ul><br></div>
 <div class="test elemento" data-propiedades="incorrecta ">
@@ -281,15 +270,18 @@ Fitxer amb les visites: "TestSalesMan\\Graf10_40_4.VIS"</p>
 Fitxer amb el cami correcte: "TestSalesMan\\Graf10_40_4.TRK"</p>
 <p> Temps de referència: 0.001192seg.<br>
 Temps d'execució máxim: 0.004768seg.<br>
-Temps d'execució de la prova: 0.001636seg.</P>
+Temps d'execució de la prova: 0.005168seg.</P>
 <P><b>CAMI OK:</b> [V0003 &mdash;E0003$Reverse&rarr; V0003 // V0002 &mdash;E0033$Reverse&rarr; V0003 // V0008 &mdash;E0013$Reverse&rarr; V0003 // V0007 &mdash;E0011$Reverse&rarr; V0003 // V0006 &mdash;E0039$Reverse&rarr; V0001]</P>
-<P><b>CAMI PRACTICA:</b> [V0003 &mdash;E0003$Reverse&rarr; V0003 // V0002 &mdash;E0003&rarr; V0003 &mdash;E0003$Reverse&rarr; V0003 // V0002 &mdash;E0033$Reverse&rarr; V0003 // V0008 &mdash;E0013$Reverse&rarr; V0003 // V0007 &mdash;E0011$Reverse&rarr; V0003 // V0006 &mdash;E0039$Reverse&rarr; V0001]</P>
+<P><b>CAMI PRACTICA:</b> [V0003 &mdash;E0003$Reverse&rarr; V0003 // V0002 &mdash;E0033$Reverse&rarr; V0003 // V0008 &mdash;E0013$Reverse&rarr; V0003 // V0007 &mdash;E0011$Reverse&rarr; V0003 // V0006 &mdash;E0039$Reverse&rarr; V0001]</P>
 
 <b style="color: red; ">Falla amb 1 errors</b>
 <ul>
-<li>Camí massa llarg
+<li>Temps màxim de la prova excedit
 <dd>
-Camí masa llarg ( longitud correcte 37602.7, longitud camin pràctica 47098.2)
+La prova ha exedit el temps màxim.<BR>
+Temps de ejecució de l'algorisme : 0.005168 seg.<BR>
+Temps màxim permes per la ejecució de l'algorisme : 0.004768 seg.
+
 </dd>
 </ul><br></div>
 <div class="test elemento" data-propiedades="incorrecta ">
@@ -345,10 +337,10 @@ Temps d'execució máxim: 1.73205seg.<br>
 
 <b style="color: red; ">Falla amb 1 errors</b>
 <ul>
-<li>Unhandled Exception
+<li>Time out
 <dd>
-<p> Correction of the test failed due to an unhandled exception.<br>
- EXCEPTION Exit code -1073741819 on command "GraphApplication.exe" Outputs\Graf50_200_7C_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\Graf50_200_7C.GR TestSalesMan\Graf50_200_7C.VIS Outputs\Graf50_200_7C_SalesmanBacktracking.TRK</p>
+<p> Correction of the test failed due to a out of time. Maximum time of 2s. exceded.<br>
+ EXCEPTION TIME OUT 2.000000.Kill command: "GraphApplication.exe" Outputs\Graf50_200_7C_SalesmanBacktracking_Out.txt Backtracking TestSalesMan\Graf50_200_7C.GR TestSalesMan\Graf50_200_7C.VIS Outputs\Graf50_200_7C_SalesmanBacktracking.TRK</p>
 
 </dd>
 </ul><br></div>

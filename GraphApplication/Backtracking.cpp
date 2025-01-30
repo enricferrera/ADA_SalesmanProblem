@@ -4,6 +4,7 @@
 #include <stack>
 #include <list>
 
+
 #define NO_PERTANY -1
 
 CTrack CamiMesCurt(NULL);
@@ -12,13 +13,71 @@ CVertex* pDesti;
 CTrack CamiActual(NULL);
 double LongitudCamiActual;
 int tram = -1; // En la primera iteración siempre pasa a 0
-std::list<CVertex*> recorrido;
+
 
 struct NodeCami {
 	CEdge* m_pEdge;
 	NodeCami* m_pAnterior;
+	CVertex* m_vertex;
+	bool m_startsTram;
+
+	// Constructor por defecto
+	NodeCami()
+		: m_pEdge(nullptr), m_pAnterior(nullptr), m_vertex(nullptr), m_startsTram(false) {}
+
+	// Constructor con parámetros
+	NodeCami(CEdge* pEdge, NodeCami* pAnterior, CVertex* vertex, bool startsTram)
+		: m_pEdge(pEdge), m_pAnterior(pAnterior), m_vertex(vertex), m_startsTram(startsTram) {}
 };
 
+std::list<NodeCami*> recorregut;
+
+void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, NodeCami* node, CVisits& visits)
+{
+	// Comprobem si es solucio
+	// Si hem arribat al destí
+		// Hem passat per tots els vertexs
+			// --> es solucio
+		// Si visitas completadas y camino más corto tenemos nueva solucion
+		// --> guardas solucions
+
+	// Creas node del graph imaginari que estem muntant
+	NodeCami nouNode;
+	nouNode.m_pAnterior = pAnterior;
+	nouNode.m_vertex = nouNode.m_pAnterior->m_pEdge->m_pDestination;
+
+	// Si es la primera vez que llegas al vertice i es visita --> inicio de tramo
+	if (nouNode.m_vertex->m_visita == false && nouNode.m_vertex->m_JaHePassat == false) {
+		nouNode.m_startsTram = true;
+	}
+
+	// Mires quines ramificacions te aquest node
+	for (CEdge* pE : nouNode.m_vertex->m_Edges) {
+		// Comprobar si el node es pot afegir
+		for (std::list<NodeCami*>::const_iterator it = recorregut.begin(); it != recorregut.end(); it++) {
+			if ((*it)->m_startsTram != true)
+		}
+			// Afegim i fem crida recursiva
+			node.m_pEdge = pE;
+			LongitudCamiActual += pE->m_Length;
+			SalesmanTrackBacktrackingRecursiu(&node, pE->m_pDestination, visits);
+			LongitudCamiActual -= pE->m_Length;
+		}
+}
+
+CTrack SalesmanTrackBacktracking(CGraph& graph, CVisits& visits)
+{	
+	CVertex* pInici = visits.m_Vertices.front();
+	pDesti = visits.m_Vertices.back();
+
+	NodeCami node(nullptr, nullptr, pInici, true);
+
+	SalesmanTrackBacktrackingRecursiu(NULL, &node, visits)
+}
+
+
+
+/*
 // =============================================================================
 // SalesmanTrackBacktracking ===================================================
 // =============================================================================
@@ -85,8 +144,8 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 		// Si hechamos para atras hemos de quitar el nodo de ese tramo y si es uno de los que inicia lo ponemos a -1; Si estas en el tramo 1 y has iniciado el tramo 1, lo quitas del tramo 1, quitas que ha iniciado el tramo 1 y reduces el tramo --> Esto es para las visitas
 		// Sinó es una visita, lo quitas del tramo y ya
 		// En general has de quitar que pertenece al tramo y que has pasado por el
-		ciclo:
-		if (pActual->m_visita && tram == pActual->m_startsTram)
+		: ciclo
+		if (pActual->m_visita && tram == pActual->m_startsTram && pActual->copsHePassat == 1)
 		{
 			pActual->m_esPartDeTram[tram] = false;
 			pActual->m_startsTram = -1;
@@ -118,9 +177,9 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 
 	// Usaré la structura nodo para reacer el camino
 	// Y usaré la lista de vertices para comprobar tramos y visitas
-}
+//}
 
-
+/*
 CTrack SalesmanTrackBacktracking(CGraph &graph, CVisits &visits)
 {
 	CVertex* pInici = visits.m_Vertices.front();
@@ -150,9 +209,100 @@ CTrack SalesmanTrackBacktracking(CGraph &graph, CVisits &visits)
 	
 	return CamiMesCurt;
 }
+*/
 
+/*
+#include <limits>
+#include <vector>
+#include <unordered_set>
+#include <list>
+using namespace std;
 
+void backtrack(int currentSegmentIndex, CVertex* currentVertex, unordered_set<CVertex*>& visitedInSegment, const vector<CVertex*>& visitVec, CTrack& currentTrack, double currentLength, CTrack& bestTrack, double& minLength) {
+	// Prune paths that exceed the current minimum length
+	if (currentLength >= minLength) {
+		return;
+	}
 
+	// Check if all segments have been processed
+	if (currentSegmentIndex >= visitVec.size() - 1) {
+		if (currentLength < minLength) {
+			minLength = currentLength;
+			bestTrack.m_Edges = currentTrack.m_Edges;
+		}
+		return;
+	}
+
+	// Check if the current vertex is the end of the current segment
+	if (currentVertex == visitVec[currentSegmentIndex + 1]) {
+		// Move to the next segment with a new visited set starting from the current vertex
+		unordered_set<CVertex*> nextVisited;
+		nextVisited.insert(currentVertex);
+		backtrack(currentSegmentIndex + 1, currentVertex, nextVisited, visitVec, currentTrack, currentLength, bestTrack, minLength);
+		return;
+	}
+
+	// Explore all outgoing edges from the current vertex
+	for (CEdge* edge : currentVertex->m_Edges) {
+		CVertex* nextVertex = edge->m_pDestination;
+
+		// Skip if the next vertex is already visited in this segment
+		if (visitedInSegment.find(nextVertex) != visitedInSegment.end()) {
+			continue;
+		}
+
+		// Check if the next vertex is a future visit beyond the next immediate one
+		bool isFutureVisit = false;
+		for (size_t i = currentSegmentIndex + 2; i < visitVec.size(); ++i) {
+			if (nextVertex == visitVec[i]) {
+				isFutureVisit = true;
+				break;
+			}
+		}
+		if (isFutureVisit) {
+			continue;
+		}
+
+		// Temporarily mark the next vertex as visited in this segment
+		visitedInSegment.insert(nextVertex);
+		currentTrack.m_Edges.push_back(edge);
+		double newLength = currentLength + edge->m_Length;
+
+		// Recur with the next vertex
+		backtrack(currentSegmentIndex, nextVertex, visitedInSegment, visitVec, currentTrack, newLength, bestTrack, minLength);
+
+		// Undo changes for backtracking
+		currentTrack.m_Edges.pop_back();
+		visitedInSegment.erase(nextVertex);
+	}
+}
+
+CTrack SalesmanTrackBacktracking(CGraph& graph, CVisits& visits) {
+	CTrack millorCami;
+	millorCami.SetGraph(&graph);
+	double minLength = numeric_limits<double>::max();
+
+	list<CVertex*>& visitList = visits.m_Vertices;
+	if (visitList.size() < 2) {
+		return millorCami
+	}
+
+	// Convertim les visites de llista a vector
+	vector<CVertex*> visitVec(visitList.begin(), visitList.end());
+
+	CTrack camiActual;
+	camiActual.SetGraph(&graph);
+
+	// Initialize visited set with the first vertex of the first segment
+	unordered_set<CVertex*> initialVisited;
+	initialVisited.insert(visitVec[0]);
+
+	// Start backtracking from the first segment
+	backtrack(0, visitVec[0], initialVisited, visitVec, camiTrack, 0.0, bestTrack, minLength);
+
+	return bestTrack;
+}
+*/
 
 // =============================================================================
 // SalesmanTrackBacktrackingGreedy =============================================
