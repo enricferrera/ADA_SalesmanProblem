@@ -5,6 +5,7 @@
 #include "Graph.h"
 #include "Logs.h"
 #include <iomanip> 
+#include <Windows.h>
 
 
 // =============================================================================
@@ -59,8 +60,18 @@ void OpenLog()
 			if (!dirExists(dirName)) {
 				dirName = "..\\..\\..\\LOGS";
 				if (!dirExists(dirName)) {
-					AfxMessageBox("LOGS directory not found. Close Application.");
-					exit(1);
+					// Attempt to create LOGS in the executable directory
+					const char* exePath = ProgramFileName();
+					std::string exeDir(exePath);
+					size_t pos = exeDir.find_last_of("\\/");
+					if (pos != std::string::npos) exeDir = exeDir.substr(0, pos);
+					std::string exeLogs = exeDir + "\\LOGS";
+					if (createDirectories(exeLogs)) {
+						dirName = exeLogs;
+					} else {
+						AfxMessageBox("LOGS directory not found and could not be created. Close Application.");
+						exit(1);
+					}
 				}
 			}
 		}
@@ -111,4 +122,40 @@ void PrintLog(const char* Format, ...)
 	LogOut<< " " << setw(2) << setfill('0') << time.wHour << ":" << setw(2) << setfill('0') << time.wMinute << ":" << setw(2) << setfill('0') << time.wSecond << ": ";
 	LogOut << buf << endl;
 	LogOut.flush();
+}
+
+// Create directories recursively (returns true on success or if already exists)
+bool createDirectories(const std::string& dirPath)
+{
+	if (dirExists(dirPath)) return true;
+	std::string path = dirPath;
+	// Normalize separators
+	for (char &c : path) if (c=='/') c='\\';
+	std::string cur;
+	size_t i = 0;
+	// If path starts with drive letter (like C:\), include that
+	if (path.size() >= 2 && path[1] == ':') {
+		cur = path.substr(0, 2);
+		i = 2;
+	}
+	for (; i < path.size(); ++i) {
+		cur.push_back(path[i]);
+		if (path[i] == '\\') {
+			// create the cur directory
+			if (!dirExists(cur)) {
+				if (!CreateDirectoryA(cur.c_str(), NULL)) {
+					DWORD err = GetLastError();
+					if (err != ERROR_ALREADY_EXISTS) return false;
+				}
+			}
+		}
+	}
+	// last segment
+	if (!dirExists(cur)) {
+		if (!CreateDirectoryA(cur.c_str(), NULL)) {
+			DWORD err = GetLastError();
+			if (err != ERROR_ALREADY_EXISTS) return false;
+		}
+	}
+	return dirExists(dirPath);
 }
