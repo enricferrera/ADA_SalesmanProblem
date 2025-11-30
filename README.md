@@ -42,7 +42,9 @@ Loading a graph and visits:
 
 ![alt text](Application.png)
 Black square: start
+
 White square: finish
+
 Orange circles: Visits the path has to go through
 
 To see the algorithms implemented click the corresponding button, currently available are:
