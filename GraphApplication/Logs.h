@@ -20,3 +20,5 @@ extern ofstream LogOut; // Stream del fichero de log
 void OpenLog();
 void CloseLog();
 void PrintLog(const char* Format, ...);
+// Create directories recursively (returns true on success or if already exists)
+bool createDirectories(const std::string& dirPath);
