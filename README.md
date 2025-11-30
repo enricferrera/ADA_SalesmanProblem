@@ -1,12 +1,12 @@
 # ADA_SalesmanProblem
-Repository containing the project realized in the subject ADA (Analysis and Design of Algorithms). It includes the `GraphApplication` project (MFC desktop app) and helper projects such as the `JPEGLib` static library (libjpeg source) used by the app for JPEG handling.
+Repository containing the project realized in the subject ADA (Analysis and Design of Algorithms). It includes the `GraphApplication` project (MFC desktop app) and helper projects such as the `JPEGLib` static library (libjpeg source) used by the app for JPEG handling. All the content except these files below were created by professor Francisco Javier Sánchez Pujadas.
 
  
 [Dijkstra.cpp](GraphApplication/Dijkstra.cpp)
 [Greedy.cpp](GraphApplication/Greedy.cpp)
 [Backtracking.cpp](GraphApplication/Backtracking.cpp)
 [BranchAndBound.cpp](GraphApplication/BranchAndBound.cpp)
-[Probabilistic.cpp](GraphApplication/Probabilistic.cpp)
+[Probabilistic.cpp](GraphApplication/Probabilistic.cpp)<br>
 All algorithms are explained below
 
 Overview
@@ -41,13 +41,11 @@ Loading a graph and visits:
 - Files -> Load Visits -> Navigate to TestSalesMan and load the visit corresponding to the Graph you choose
 
 ![alt text](Application.png)
-Black square: start
+_Black square:_ start.<br>
+_White square:_ finish.<br>
+_Orange circles:_ Visits the path has to go through.<br>
 
-White square: finish
-
-Orange circles: Visits the path has to go through
-
-To see the algorithms implemented click the corresponding button, currently available are:
+To see the algorithms implemented click the corresponding button, currently available are:<br>
 [Dijkstra.cpp](GraphApplication/Dijkstra.cpp): Implementation of Dijkstra's shortest-path algorithm in two variants: a simple O(V^2) version that selects the next vertex by scanning all vertices, and a priority-queue (min-heap) variant `DijkstraQueue` using `std::priority_queue` for faster performance on sparse graphs; these are used elsewhere (Greedy/Backtracking) to compute shortest paths between visits.
 
 [Greedy.cpp](GraphApplication/Greedy.cpp): Greedy strategy for the Traveling Salesman Problem. This implementation repeatedly runs Dijkstra from the current vertex to find the closest unvisited visit (by shortest-path distance), appends the Dijkstra path between the current and chosen visits, and proceeds until the final visit. Fast and simple but not guaranteed to be optimal (greedy decisions may miss the global optimum).
@@ -69,4 +67,5 @@ These variants differ in their degree of pruning and performance trade-offs; bra
 
 License & Credits
 -----------------
-Check the project files for licensing information. `libjpeg-turbo` is a third-party dependency; its code is included under its own license.
+`libjpeg-turbo` is a third-party dependency; its code is included under its own license.
+Francisco Javier Sánchez Pujadas
