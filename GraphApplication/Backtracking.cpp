@@ -12,7 +12,7 @@ double LongitudCamiMesCurt;
 CVertex* pDesti;
 CTrack CamiActual(NULL);
 double LongitudCamiActual;
-int tram = -1; // En la primera iteración siempre pasa a 0
+int tram = -1; // En la primera iteraciï¿½n siempre pasa a 0
 
 
 struct NodeCami {
@@ -25,7 +25,7 @@ struct NodeCami {
 	NodeCami()
 		: m_pEdge(nullptr), m_pAnterior(nullptr), m_vertex(nullptr), m_startsTram(false) {}
 
-	// Constructor con parámetros
+	// Constructor con parï¿½metros
 	NodeCami(CEdge* pEdge, NodeCami* pAnterior, CVertex* vertex, bool startsTram)
 		: m_pEdge(pEdge), m_pAnterior(pAnterior), m_vertex(vertex), m_startsTram(startsTram) {}
 };
@@ -34,11 +34,12 @@ std::list<NodeCami*> recorregut;
 
 void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, NodeCami* node, CVisits& visits)
 {
+	/*
 	// Comprobem si es solucio
-	// Si hem arribat al destí
+	// Si hem arribat al destï¿½
 		// Hem passat per tots els vertexs
 			// --> es solucio
-		// Si visitas completadas y camino más corto tenemos nueva solucion
+		// Si visitas completadas y camino mï¿½s corto tenemos nueva solucion
 		// --> guardas solucions
 
 	// Creas node del graph imaginari que estem muntant
@@ -66,16 +67,21 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, NodeCami* node, CVis
 			SalesmanTrackBacktrackingRecursiu(&node, pE->m_pDestination, visits);
 			LongitudCamiActual -= pE->m_Length;
 		}
+			*/
 }
 
 CTrack SalesmanTrackBacktracking(CGraph& graph, CVisits& visits)
 {	
+	/*
 	CVertex* pInici = visits.m_Vertices.front();
 	pDesti = visits.m_Vertices.back();
 
 	NodeCami node(nullptr, nullptr, pInici, true);
 
 	SalesmanTrackBacktrackingRecursiu(NULL, &node, visits)
+	*/
+
+	return CTrack();
 }
 
 
@@ -87,19 +93,19 @@ CTrack SalesmanTrackBacktracking(CGraph& graph, CVisits& visits)
 
 void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CVisits& visits)
 {
-	// COMPROBACIÓ CAMÍ
-	// ¿Hem arribat al destí?
+	// COMPROBACIï¿½ CAMï¿½
+	// ï¿½Hem arribat al destï¿½?
 	if (pActual == pDesti) {
-		// ¿Hem passat per totes les visites?
+		// ï¿½Hem passat per totes les visites?
 		bool visitesCompletades = true;
-		pActual->m_visitesVisitades.back() = true; // Posem destí com visitat
+		pActual->m_visitesVisitades.back() = true; // Posem destï¿½ com visitat
 		for (bool visita : pActual->m_visitesVisitades)
 			if (visita == false) {
 				visitesCompletades = false;
 				break;
 			}
 		
-		// Si totes les visites i cami més curt
+		// Si totes les visites i cami mï¿½s curt
 		if (visitesCompletades && LongitudCamiActual < LongitudCamiMesCurt) {
 			CamiMesCurt.Clear();
 			while (pAnterior) {
@@ -112,7 +118,7 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 
 	// PAS ENDAVANT - PAS ENDARRERE
 	if (LongitudCamiActual < LongitudCamiMesCurt) {
-		// Si no hem passat en general i es visita, cambiem de tram i marquem que aquest node comença aquest tram
+		// Si no hem passat en general i es visita, cambiem de tram i marquem que aquest node comenï¿½a aquest tram
 		if (pActual->m_visita && pActual->m_esPartDeTram[tram] == false) {
 			tram++;
 			pActual->m_startsTram = tram;
@@ -125,7 +131,7 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 
 		NodeCami node; node.m_pAnterior = pAnterior;
 
-		// Mirem tots els edges y mirem si el destí es una opció
+		// Mirem tots els edges y mirem si el destï¿½ es una opciï¿½
 		//	- Recorrem fins que trobem el que ha iniciat aquest tram
 		//	- Mirem que no haguem passat per aquest vertex en aquest tram
 		for (CEdge* pE : pActual->m_Edges) {
@@ -145,7 +151,7 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 			}
 		//}
 		// Si hechamos para atras hemos de quitar el nodo de ese tramo y si es uno de los que inicia lo ponemos a -1; Si estas en el tramo 1 y has iniciado el tramo 1, lo quitas del tramo 1, quitas que ha iniciado el tramo 1 y reduces el tramo --> Esto es para las visitas
-		// Sinó es una visita, lo quitas del tramo y ya
+		// Sinï¿½ es una visita, lo quitas del tramo y ya
 		// En general has de quitar que pertenece al tramo y que has pasado por el
 		: ciclo
 		if (pActual->m_visita && tram == pActual->m_startsTram && pActual->copsHePassat == 1)
@@ -163,23 +169,23 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, CVertex* pActual, CV
 		// True Copiar camino
 
 	// Paso adelante
-		// Añadir al stack, marcar como visto y añadir al tramo
-		// ¿Para añadir con que no sea parte del tramo ya vale?
+		// Aï¿½adir al stack, marcar como visto y aï¿½adir al tramo
+		// ï¿½Para aï¿½adir con que no sea parte del tramo ya vale?
 
 	// Paso atras
 		// Quitar del stack, desmarcar como visto y quitar del tramo
 
 
 	/*
-		Major problema, al comprobar si un vertice es apto para continuar, hemos de ver si en ese tramo aún no hemos pasado. Cómo lo hacemos? Miramos en la pila hasta la última visita que habíamos visitado por primera vez. Y si paso por un nodo visita que no marca el comienzo del tramo.
+		Major problema, al comprobar si un vertice es apto para continuar, hemos de ver si en ese tramo aï¿½n no hemos pasado. Cï¿½mo lo hacemos? Miramos en la pila hasta la ï¿½ltima visita que habï¿½amos visitado por primera vez. Y si paso por un nodo visita que no marca el comienzo del tramo.
 		Como cojones hago eso?
-			- Recorrer hacía atras los vertices hasta encontrar uno que sea visita
-			- Variable en Vertice que indique que tramo marca esa visita. Ej: Si ese vertice visita marca el comienzo del tramo 2, y estamos en el 3, al recorrer el camino hacía atras, lo haremos hasta el vertice que tenga el indicador de iniciador de tramo en 3.
+			- Recorrer hacï¿½a atras los vertices hasta encontrar uno que sea visita
+			- Variable en Vertice que indique que tramo marca esa visita. Ej: Si ese vertice visita marca el comienzo del tramo 2, y estamos en el 3, al recorrer el camino hacï¿½a atras, lo haremos hasta el vertice que tenga el indicador de iniciador de tramo en 3.
 			- A parte no queremos pasar dos veces por el mismo vertice en el mismo tramo, necesitamos marcar a que tramos pertenece el vertice
 	*/
 
-	// Usaré la structura nodo para reacer el camino
-	// Y usaré la lista de vertices para comprobar tramos y visitas
+	// Usarï¿½ la structura nodo para reacer el camino
+	// Y usarï¿½ la lista de vertices para comprobar tramos y visitas
 //}
 
 /*
@@ -321,7 +327,7 @@ static struct infoCami{
 
 static void generarTaula(CGraph& graph, CVisits& visits, std::vector<std::vector<infoCami>>& matriuCamins)
 {
-	// Para cada visita, mira el camino más corto de todas las visitas a la actual
+	// Para cada visita, mira el camino mï¿½s corto de todas las visitas a la actual
 	size_t i = 0;
 	for (auto visit : visits.m_Vertices) {
 		DijkstraQueue(graph, visit);
@@ -332,7 +338,7 @@ static void generarTaula(CGraph& graph, CVisits& visits, std::vector<std::vector
 			while (vertexActual != visit && vertexActual->m_pDijkstraPrevious != nullptr) {
 				matriuCamins[i][j].cami.AddFirst(vertexActual->m_pDijkstraPrevious);
 				matriuCamins[i][j].longitud += vertexActual->m_pDijkstraPrevious->m_Length;
-				vertexActual = vertexActual->m_pDijkstraPrevious->m_pOrigin; // Es origin->recorre al revés
+				vertexActual = vertexActual->m_pDijkstraPrevious->m_pOrigin; // Es origin->recorre al revï¿½s
 			}
 			j++;
 		}
@@ -363,7 +369,7 @@ void SalesmanTrackBacktrackingGreedyRecursiu(CGraph& graph, CVisits& visits, std
 			// Poda
 			if (novaLongitud >= LongitudCamiMesCurt) continue;
 
-			// Marcar visitat i recursió
+			// Marcar visitat i recursiï¿½
 			visitat[i] = true;
 			camiActual.push_back(i);
 
