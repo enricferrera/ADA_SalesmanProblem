@@ -56,6 +56,9 @@ void SalesmanTrackBacktrackingRecursiu(NodeCami* pAnterior, NodeCami* node, CVis
 		// Comprobar si el node es pot afegir
 		for (std::list<NodeCami*>::const_iterator it = recorregut.begin(); it != recorregut.end(); it++) {
 			if ((*it)->m_startsTram != true)
+			{
+				if 
+			}
 		}
 			// Afegim i fem crida recursiva
 			node.m_pEdge = pE;
