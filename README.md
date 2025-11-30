@@ -40,7 +40,7 @@ Loading a graph and visits:
 - Files -> Load Graph -> Navigate to TestSalesMan and choose
 - Files -> Load Visits -> Navigate to TestSalesMan and load the visit corresponding to the Graph you choose
 
-![alt text](application.png)
+![alt text](Application.png)
 Black square: start
 White square: finish
 Orange circles: Visits the path has to go through
