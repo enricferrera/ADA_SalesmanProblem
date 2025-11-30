@@ -1,13 +1,12 @@
 # ADA_SalesmanProblem
 Repository containing the project realized in the subject ADA (Analysis and Design of Algorithms). It includes the `GraphApplication` project (MFC desktop app) and helper projects such as the `JPEGLib` static library (libjpeg source) used by the app for JPEG handling.
 
-All the contents except the following files were developed by the professor Francisco Javier Sánchez Pujadas. The algorithms developed by me are the following:
-
-[Dijkstra.cpp](GraphApplication\Dijkstra.cpp)
-[Greedy.cpp](GraphApplication\Greedy.cpp)
-[Backtracking.cpp](GraphApplication\Backtracking.cpp)
-[BranchAndBound.cpp](GraphApplication\BranchAndBound.cpp)
-[Probabilistic.cpp](GraphApplication\Probabilistic.cpp)
+ 
+[Dijkstra.cpp](GraphApplication/Dijkstra.cpp)
+[Greedy.cpp](GraphApplication/Greedy.cpp)
+[Backtracking.cpp](GraphApplication/Backtracking.cpp)
+[BranchAndBound.cpp](GraphApplication/BranchAndBound.cpp)
+[Probabilistic.cpp](GraphApplication/Probabilistic.cpp)
 
 Overview
 --------
@@ -32,7 +31,7 @@ Visual Studio:
 3. (Recommended) Add a project reference (GraphApplication → right-click → Add → Reference → Projects → check `JPEGLib`) so Visual Studio automatically builds the library and links to it.
 4. Choose the configuration (e.g., Debug|x64 or Debug|Win32).
 5. Build → Rebuild Solution.
-6. Run the application or locate the generated executable at a path similar to `x64\Debug\GraphApplication.exe`.
+ 6. Run the application or locate the generated executable at a path similar to `x64/Debug/GraphApplication.exe`.
 
 License & Credits
 -----------------
